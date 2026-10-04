@@ -1,0 +1,33 @@
+cmake_minimum_required(VERSION 3.16)
+project(echo LANGUAGES CXX)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+set(CORE_PATH "G:/core/proj/core")
+set(LUAJIT_PATH "G:/core/repos/LuaJIT-2.1/src")
+
+# Движок как подпроект
+add_subdirectory(${CORE_PATH} ${CMAKE_BINARY_DIR}/core)
+
+# Игра: main.cpp + код игры
+file(GLOB_RECURSE SOURCES "src/*.cpp")
+add_executable(echo_game ${SOURCES})
+
+# Линкуемся с движком
+target_link_libraries(echo_game PRIVATE basic)
+
+
+add_custom_command(TARGET echo_game POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+    ${LUAJIT_PATH}/lua51.dll
+    $<TARGET_FILE_DIR:echo_game>
+)
+
+
+
+
+
+
+

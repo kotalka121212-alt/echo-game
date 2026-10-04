@@ -1,0 +1,25 @@
+set(RAYLIB_PATH "G:/core/repos/lib/raylib/raylib")
+set(LUAJIT_PATH "G:/core/repos/LuaJIT-2.1/src")
+
+file(GLOB_RECURSE SOURCES "*.cpp")
+file(GLOB_RECURSE HEADERS "*.h")
+
+add_library(basic STATIC ${SOURCES} ${HEADERS})
+
+target_include_directories(basic PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${RAYLIB_PATH}/src
+    ${LUAJIT_PATH}
+)
+
+target_link_libraries(basic PUBLIC
+    ${RAYLIB_PATH}/src/libraylib.a
+    ${LUAJIT_PATH}/libluajit-5.1.dll.a
+)
+
+if(WIN32)
+    target_link_libraries(basic PUBLIC winmm gdi32 opengl32 ws2_32)
+endif()
+
+
+
